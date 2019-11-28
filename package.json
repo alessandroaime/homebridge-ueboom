@@ -1,0 +1,31 @@
+{
+  "name": "homebridge-ueboom",
+  "version": "0.0.1",
+  "description": "Homebridge plugin for UE Boom speakers",
+  "license": "MIT",
+  "author": "Alessandro Aime",
+  "keywords": [
+    "homebridge-plugin",
+    "ueboom",
+    "speaker",
+    "homekit",
+    "apple",
+    "bluetooth",
+    "node.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alessandroaime/homebridge-ueboom.git"
+  },
+  "bugs": {
+    "url": "http://github.com/alessandroaime/homebridge-ueboom/issues"
+  },
+  "homepage": "https://github.com/alessandroaime/homebridge-ueboom#readme",
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
+  "dependencies": {
+    "node-persist": "^2.1.0"
+  }
+}

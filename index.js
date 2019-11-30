@@ -46,18 +46,16 @@ UEBoomSpeaker.prototype.getServices = function() {
 }
 
 UEBoomSpeaker.prototype._setOn = function(on, callback) {
-  this.log("Setting switch to " + on);
+  this.log("Setting speaker to " + on);
 
   this.storage.setItemSync(this.name, on);
 
   if (on) {
-    const command = 'gatttool -i hci0 -b ' + this.mac + ' --char-write-req -a 0x0003 -n 4098ADA356C401';
+    const command = "gatttool -i hci0 -b " + this.mac + " --char-write-req -a 0x0003 -n 4098ADA356C401";
     child = exec(command,
       function(error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
         if (error !== null) {
-          console.log('exec error: ' + error);
+          console.log("stderr: " + stderr);
         }
       });
   } else {

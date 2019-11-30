@@ -41,7 +41,8 @@ sudo npm install -g homebridge-ueboom
 
 To get the plugin working you have to provide the following parameters:
 
-  * `mac`: MAC address of the speaker
+  * `speaker`: MAC address of the speaker
+  * `host`: MAC address of the music source device (iPhone, ...)
 
 In case you don't know how to retrieve the MAC address of the speaker:
 
@@ -50,9 +51,11 @@ In case you don't know how to retrieve the MAC address of the speaker:
  3. Select the speaker of which you need the address
  4. Write down the MAC address
 
+To retrieve the MAC address of the host, it strictly depends on the device you're using. If you're playing music from an iPhone/iPad then you can find it in `Settings > General > About > Bluetooth`.
+
 ## Configuration
 
-Create a [`~/.homebridge/config.json`](https://github.com/nfarina/homebridge/blob/master/config-sample.json) file (change `name` and `mac` as necessary):
+Create a [`~/.homebridge/config.json`](https://github.com/nfarina/homebridge/blob/master/config-sample.json) file (change `name`, `speaker` and `host` as necessary):
 
 
 ```json
@@ -68,12 +71,15 @@ Create a [`~/.homebridge/config.json`](https://github.com/nfarina/homebridge/blo
     {
       "accessory": "UEBoomSpeaker",
       "name": "Bathroom Speaker",
-      "mac": "CA:38:93:3B:D8:5D"
+      "speaker": "C0:28:8D:45:28:55",
+      "host": "4098ADA356C4"
     }
   ],
   "platforms": []
 }
 ```
+
+**Breaking change: in case you're transitioning from v0.0.1 or v0.0.2, update your config file with the newly requested variables!**
 
 ## How does it work
 
@@ -81,8 +87,24 @@ Since more than one person asked me how this works and that the speaker doesn't 
 
 This is the command that does the whole work, everything else is just boilerplate code for the homebridge plugin:
 
-`gatttool -i hci0 -b $MAC_ADDRESS --char-write-req -a 0x0003 -n 4098ADA356C401`
+```bash
+gatttool -i hci0 -b $SPEAKER_ADDRESS --char-write-req -a 0x0003 -n ${HOST_ADDRESS}01
+```
 
-**The `gatttool` command turns the speaker on but doesn’t associate the speaker with the Raspberry Pi. The speaker connects to the latest paired device (in my case my iPhone).**
+**The `gatttool` command turns the speaker on but doesn’t associate the speaker with the Raspberry Pi. The speaker connects to the `host` device (in my case my iPhone).**
 
 I don't know the exact specifications so this is pure speculation: the speaker itself has the usual Bluetooth 4.0 module that allows to stream music, in addition to that there's also a BLE (Bluetooth Low Energy) module that for its own nature is always on and allows to turn the speaker on and off remotely (within range). The only reason why I'm not sure this is the real reason is that the two modules would probably have two separate MAC addresses, and from what I've observed there's only one single address available.
+
+## How I did it
+
+I knew that the speaker could be turned on remotely (within range) using the proprietary [Ultimate Ears app](https://apps.apple.com/us/app/boom-megaboom/id632344648), and it was obvious that the bluetooth command was sent by the application itself.
+
+I first installed Apple's [Bluetooth logging profile](https://developer.apple.com/services-account/download?path=/iOS/iOS_Logs/iOSBluetoothLogging.mobileconfig) on my iPhone, then connected it to the Mac via USB and used [PacketLogger](https://download.developer.apple.com/Developer_Tools/Additional_Tools_for_Xcode_11/Additional_Tools_for_Xcode_11.dmg) to trace the packages sent from the phone (specifically `ATT Send` type). By opening the UE app and tapping on the remote power button in it I was able to *sniff* the conversation between the phone and the speaker as shown in this screenshot.
+
+![packetLoggerScreenshot](packetLoggerScreenshot.png)
+
+From here I retrieved the MAC address of the speaker (as described above) and used `gatttool` to perform a write request, and *BOOM* I can turn on the speaker from my command line.
+
+## Contributors
+
+A special thanks goes to [Newton Barbosa](https://github.com/newtonlb) for noticing that `Value` is the host MAC address without semicolons followed by `01`.

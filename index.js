@@ -14,7 +14,8 @@ function UEBoomSpeaker(log, config) {
   this.stateful = true;
   this.reverse = false;
   this.time = 1000;
-  this.mac = config.mac;
+  this.speaker = config.speaker;
+  this.host = config.host;
   this._service = new Service.Switch(this.name);
 
   this.cacheDirectory = HomebridgeAPI.user.persistPath();
@@ -38,7 +39,7 @@ UEBoomSpeaker.prototype.getServices = function() {
   var informationService = new Service.AccessoryInformation();
   informationService.setCharacteristic(Characteristic.Manufacturer, "Alessandro Aime")
   informationService.setCharacteristic(Characteristic.Model, "UE Boom")
-  informationService.setCharacteristic(Characteristic.SerialNumber, this.mac);
+  informationService.setCharacteristic(Characteristic.SerialNumber, this.speaker);
 
   this.informationService = informationService;
 
@@ -51,7 +52,7 @@ UEBoomSpeaker.prototype._setOn = function(on, callback) {
   this.storage.setItemSync(this.name, on);
 
   if (on) {
-    const command = "gatttool -i hci0 -b " + this.mac + " --char-write-req -a 0x0003 -n 4098ADA356C401";
+    const command = "gatttool -i hci0 -b " + this.speaker + " --char-write-req -a 0x0003 -n " + this.host + "01";
     child = exec(command,
       function(error, stdout, stderr) {
         if (error !== null) {

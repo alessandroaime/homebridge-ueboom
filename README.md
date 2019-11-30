@@ -8,11 +8,32 @@ This is an accessory plugin for [Homebridge](https://github.com/nfarina/homebrid
 
 ## Installation
 
-First, install [Homebridge](https://github.com/nfarina/homebridge) and [Gatttool](https://www.npmjs.com/package/gatttool) (you also need [Node.js](https://nodejs.org/) installed):
+### Homebridge
+
+First, install [Homebridge](https://github.com/nfarina/homebridge) and `gatttool` via [Bluez](http://www.bluez.org) (you also need [Node.js](https://nodejs.org/) installed):
 
 ```bash
 sudo npm install -g homebridge
-sudo npm install -g gatttool
+sudo apt-get install bluez
+```
+
+Then install this plugin:
+
+```bash
+sudo npm install -g homebridge-ueboom
+```
+
+### Homebridge Docker
+
+In case you're using [Homebridge Docker](https://github.com/oznu/docker-homebridge), add the following line to your container startup script:
+
+```bash
+apk add --no-cache bluez-deprecated
+```
+
+Then install this plugin:
+
+```bash
 sudo npm install -g homebridge-ueboom
 ```
 
@@ -53,3 +74,15 @@ Create a [`~/.homebridge/config.json`](https://github.com/nfarina/homebridge/blo
   "platforms": []
 }
 ```
+
+## How does it work
+
+Since more than one person asked me how this works and that the speaker doesn't connect to the Pi after being turned on, I thought I could spend a couple of words about.
+
+This is the command that does the whole work, everything else is just boilerplate code for the homebridge plugin:
+
+`gatttool -i hci0 -b $MAC_ADDRESS --char-write-req -a 0x0003 -n 4098ADA356C401`
+
+**The `gatttool` command turns the speaker on but doesn’t associate the speaker with the Raspberry Pi. The speaker connects to the latest paired device (in my case my iPhone).**
+
+I don't know the exact specifications so this is pure speculation: the speaker itself has the usual Bluetooth 4.0 module that allows to stream music, in addition to that there's also a BLE (Bluetooth Low Energy) module that for its own nature is always on and allows to turn the speaker on and off remotely (within range). The only reason why I'm not sure this is the real reason is that the two modules would probably have two separate MAC addresses, and from what I've observed there's only one single address available.

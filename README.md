@@ -86,3 +86,13 @@ This is the command that does the whole work, everything else is just boilerplat
 **The `gatttool` command turns the speaker on but doesn’t associate the speaker with the Raspberry Pi. The speaker connects to the latest paired device (in my case my iPhone).**
 
 I don't know the exact specifications so this is pure speculation: the speaker itself has the usual Bluetooth 4.0 module that allows to stream music, in addition to that there's also a BLE (Bluetooth Low Energy) module that for its own nature is always on and allows to turn the speaker on and off remotely (within range). The only reason why I'm not sure this is the real reason is that the two modules would probably have two separate MAC addresses, and from what I've observed there's only one single address available.
+
+## How I did it
+
+I knew that the speaker could be turned on remotely (within range) using the proprietary [Ultimate Ears app](https://apps.apple.com/us/app/boom-megaboom/id632344648), and it was obvious that the bluetooth command was sent by the application itself.
+
+I first installed Apple's [Bluetooth logging profile](https://developer.apple.com/services-account/download?path=/iOS/iOS_Logs/iOSBluetoothLogging.mobileconfig) on my iPhone, then connected it to the Mac via USB and used [PacketLogger](https://download.developer.apple.com/Developer_Tools/Additional_Tools_for_Xcode_11/Additional_Tools_for_Xcode_11.dmg) to trace the packages sent from the phone (specifically `ATT Send` type). By opening the UE app and tapping on the remote power button in it I was able to *sniff* the conversation between the phone and the speaker as shown in this screenshot.
+
+![packetLoggerScreenshot](packetLoggerScreenshot.png)
+
+From here I retrived the MAC address of the speaker (as described above) and used `gatttool` to perform a write request, and *BOOM* I can turn on the speaker from my command line.

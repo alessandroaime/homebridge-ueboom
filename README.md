@@ -50,9 +50,12 @@ In case you don't know how to retrieve the MAC address of the speaker:
  3. Select the speaker of which you need the address
  4. Write down the MAC address
 
+## Host
+The host is the mac address (without `:`) + 01
+for instance, host would be `4098ADA356C401` (MAC + 01)
 ## Configuration
 
-Create a [`~/.homebridge/config.json`](https://github.com/nfarina/homebridge/blob/master/config-sample.json) file (change `name` and `mac` as necessary):
+Create a [`~/.homebridge/config.json`](https://github.com/nfarina/homebridge/blob/master/config-sample.json) file (change `name`, `mac` and `host` as necessary):
 
 
 ```json
@@ -68,7 +71,8 @@ Create a [`~/.homebridge/config.json`](https://github.com/nfarina/homebridge/blo
     {
       "accessory": "UEBoomSpeaker",
       "name": "Bathroom Speaker",
-      "mac": "CA:38:93:3B:D8:5D"
+      "mac": "CA:38:93:3B:D8:5D",
+      "host": "4098ADA356C401"
     }
   ],
   "platforms": []

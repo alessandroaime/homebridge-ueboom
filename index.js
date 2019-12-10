@@ -15,6 +15,7 @@ function UEBoomSpeaker(log, config) {
   this.reverse = false;
   this.time = 1000;
   this.mac = config.mac;
+  this.host = config.host;
   this._service = new Service.Switch(this.name);
 
   this.cacheDirectory = HomebridgeAPI.user.persistPath();
@@ -51,7 +52,7 @@ UEBoomSpeaker.prototype._setOn = function(on, callback) {
   this.storage.setItemSync(this.name, on);
 
   if (on) {
-    const command = "gatttool -i hci0 -b " + this.mac + " --char-write-req -a 0x0003 -n 4098ADA356C401";
+    const command = "gatttool -i hci0 -b " + this.mac + " --char-write-req -a 0x0003 -n " + this.host;
     child = exec(command,
       function(error, stdout, stderr) {
         if (error !== null) {

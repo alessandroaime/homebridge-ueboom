@@ -11,13 +11,6 @@
                 "default": "Bathroom Speaker",
                 "description": "The name that will appear in your homebridge log."
             },
-            "accessory": {
-                "title": "Accessory",
-                "type": "string",
-                "default": "UEBoomSpeaker",
-                "required": true,
-                "description": "This must be UEBoomSpeaker."
-            },
             "speaker": {
                 "title": "Speaker",
                 "type": "string",

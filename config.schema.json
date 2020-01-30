@@ -22,7 +22,7 @@
                 "title": "speaker",
                 "type": "string",
                 "placeholder": "C0:28:8D:45:28:55",
-                "pattern": "\\S+:\\S+:\\S+:\\S+:\\S+:\\S+",
+                "pattern": "^([a-f0-9]{2}:){5}[a-f0-9]{2}$",
                 "required": true,
                 "description": "Your UEBoom mac address."
             },

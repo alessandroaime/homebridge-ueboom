@@ -108,3 +108,4 @@ From here I retrieved the MAC address of the speaker (as described above) and us
 ## Contributors
 
 A special thanks goes to [Newton Barbosa](https://github.com/newtonlb) for noticing that `Value` is the host MAC address without semicolons followed by `01`.
+Another special thanks to [Donavan Becker](https://github.com/donavanbecker) for adding the easy config for [`onzu/homebridge-config-ui-x`](https://github.com/oznu/homebridge-config-ui-x).

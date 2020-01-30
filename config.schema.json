@@ -1,0 +1,38 @@
+{
+    "pluginAlias": "UEBoomSpeaker",
+    "pluginType": "accessory",
+    "schema": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "title": "Name",
+                "type": "string",
+                "required": true,
+                "default": "Bathroom Speaker",
+                "description": "The name that will appear in your homebridge log."
+            },
+            "accessory": {
+                "title": "Accessory",
+                "type": "string",
+                "default": "UEBoomSpeaker",
+                "required": true,
+                "description": "This must be UEBoomSpeaker."
+            },
+            "speaker": {
+                "title": "speaker",
+                "type": "string",
+                "placeholder": "C0:28:8D:45:28:55",
+                "pattern": "\\S+:\\S+:\\S+:\\S+:\\S+:\\S+",
+                "required": true,
+                "description": "Your UEBoom mac address."
+            },
+            "host": {
+                "title": "Host",
+                "type": "string",
+                "placeholder": "4098ADA356C4",
+                "required": true,
+                "description": "Your UEBoom host."
+            }
+        }
+    }
+}

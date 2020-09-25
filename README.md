@@ -4,8 +4,6 @@
 
 This is an accessory plugin for [Homebridge](https://github.com/nfarina/homebridge) allowing to turn on and off a UE Boom speaker and integrating it with [HomeKit](https://www.apple.com/ios/home/).
 
-**Turning off the speaker is not yet possible as it requires `rfcomm` and I've been having some issues with it. As soon as I have time I'll work on it.**
-
 ## Installation
 
 ### Homebridge
@@ -109,3 +107,4 @@ From here I retrieved the MAC address of the speaker (as described above) and us
 
 A special thanks goes to [Newton Barbosa](https://github.com/newtonlb) for noticing that `Value` is the host MAC address without semicolons followed by `01`.
 Another special thanks to [Donavan Becker](https://github.com/donavanbecker) for adding the easy config for [`onzu/homebridge-config-ui-x`](https://github.com/oznu/homebridge-config-ui-x).
+A final special thanks to [Martin Kuhl](https://github.com/MartinKuhl) for figuring out how to turn the speaker off by replacing the final `01` with `02`, rather than having to fiddle around with `rfcomm` (which is what I initially thought of using).

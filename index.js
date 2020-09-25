@@ -51,17 +51,14 @@ UEBoomSpeaker.prototype._setOn = function(on, callback) {
 
   this.storage.setItemSync(this.name, on);
 
-  if (on) {
-    const command = "gatttool -i hci0 -b " + this.speaker + " --char-write-req -a 0x0003 -n " + this.host + "01";
-    child = exec(command,
-      function(error, stdout, stderr) {
-        if (error !== null) {
-          console.log("stderr: " + stderr);
-        }
-      });
-  } else {
-    // TURN OFF, NOT YET IMPLEMENTED
-  }
+  child = exec(
+    "gatttool -i hci0 -b " + this.speaker + " --char-write-req -a 0x0003 -n " + this.host + (on ? "01" : "02"),
+    function(error, stdout, stderr) {
+      if (error !== null) {
+        console.log("stderr: " + stderr);
+      }
+    }
+  );
 
   callback();
 }

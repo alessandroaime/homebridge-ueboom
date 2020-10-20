@@ -1,6 +1,6 @@
 {
   "name": "homebridge-ueboom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Homebridge plugin for UE Boom speakers",
   "license": "MIT",
   "author": "Alessandro Aime",
@@ -33,5 +33,9 @@
   "main": "index.js",
   "scripts": {
     "test": ""
+  },
+  "funding": {
+    "type": "paypal",
+    "url": "https://paypal.me/alessandroaime"
   }
 }

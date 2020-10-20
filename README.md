@@ -1,6 +1,18 @@
-# Homebridge UE Boom speaker plugin
+<p align="center">
+  <a href="https://github.com/alessandroaime/homebridge-ueboom"><img src="README/logo.png" width="500px"></a>
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<span align="center">
+
+# Homebridge UE Boom (Speaker Plugin)
+
+<a href="https://opensource.org/licenses/MIT"><img title="license" src="https://img.shields.io/badge/License-MIT-yellow.svg" ></a>
+<a href="https://github.com/homebridge/homebridge/wiki/Verified-Plugins"><img title="homebridge verified" src="https://badgen.net/badge/homebridge/verified/purple" ></a>
+<a href="https://www.npmjs.com/package/homebridge-ueboom"><img title="npm version" src="https://badgen.net/npm/v/homebridge-ueboom" ></a>
+<a href="https://www.npmjs.com/package/homebridge-ueboom"><img title="npm downloads" src="https://badgen.net/npm/dt/homebridge-ueboom" ></a>
+<a href="https://www.paypal.me/alessandroaime"><img title="paypal" src="https://badgen.net/badge/Donate/PayPal/91BE09" ></a>
+
+</span>
 
 This is an accessory plugin for [Homebridge](https://github.com/nfarina/homebridge) allowing to turn on and off a UE Boom speaker and integrating it with [HomeKit](https://www.apple.com/ios/home/).
 
@@ -99,12 +111,14 @@ I knew that the speaker could be turned on remotely (within range) using the pro
 
 I first installed Apple's [Bluetooth logging profile](https://developer.apple.com/services-account/download?path=/iOS/iOS_Logs/iOSBluetoothLogging.mobileconfig) on my iPhone, then connected it to the Mac via USB and used [PacketLogger](https://download.developer.apple.com/Developer_Tools/Additional_Tools_for_Xcode_11/Additional_Tools_for_Xcode_11.dmg) to trace the packages sent from the phone (specifically `ATT Send` type). By opening the UE app and tapping on the remote power button in it I was able to *sniff* the conversation between the phone and the speaker as shown in this screenshot.
 
-![packetLoggerScreenshot](packetLoggerScreenshot.png)
+![packetLoggerScreenshot](README/packetLoggerScreenshot.png)
 
 From here I retrieved the MAC address of the speaker (as described above) and used `gatttool` to perform a write request, and *BOOM* I can turn on the speaker from my command line.
 
 ## Contributors
 
-A special thanks goes to [Newton Barbosa](https://github.com/newtonlb) for noticing that `Value` is the host MAC address without semicolons followed by `01`.
-Another special thanks to [Donavan Becker](https://github.com/donavanbecker) for adding the easy config for [`onzu/homebridge-config-ui-x`](https://github.com/oznu/homebridge-config-ui-x).
-A final special thanks to [Martin Kuhl](https://github.com/MartinKuhl) for figuring out how to turn the speaker off by replacing the final `01` with `02`, rather than having to fiddle around with `rfcomm` (which is what I initially thought of using).
+Special thanks go to:
+
+- [Newton Barbosa](https://github.com/newtonlb), for noticing that `Value` is the host MAC address without semicolons followed by `01`.
+- [Donavan Becker](https://github.com/donavanbecker), for adding the easy config for [`onzu/homebridge-config-ui-x`](https://github.com/oznu/homebridge-config-ui-x).
+- [Martin Kuhl](https://github.com/MartinKuhl), for figuring out how to turn the speaker off by replacing the final `01` with `02`.

@@ -4,7 +4,7 @@ var child;
 
 let Service;
 let Characteristic;
-let HomebridgeAPI;
+var HomebridgeAPI;
 
 function UEBoomSpeaker(log, config) {
   this.log = log;

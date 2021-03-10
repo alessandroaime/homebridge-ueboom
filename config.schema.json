@@ -1,31 +1,32 @@
 {
-    "pluginAlias": "UEBoomSpeaker",
-    "pluginType": "accessory",
-    "schema": {
-        "type": "object",
-        "properties": {
-            "name": {
-                "title": "Name",
-                "type": "string",
-                "required": true,
-                "default": "Bathroom Speaker",
-                "description": "The name that will appear in your homebridge log."
-            },
-            "speaker": {
-                "title": "Speaker",
-                "type": "string",
-                "placeholder": "C0:28:8D:45:28:55",
-                "pattern": "^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$",
-                "required": true,
-                "description": "Your UEBoom mac address."
-            },
-            "host": {
-                "title": "Host",
-                "type": "string",
-                "placeholder": "4098ADA356C4",
-                "required": true,
-                "description": "Your UEBoom host."
-            }
-        }
+  "pluginAlias": "UEBoomSpeaker",
+  "pluginType": "accessory",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "required": true,
+        "default": "UE Boom Speaker",
+        "description": "The name that will appear in your homebridge log."
+      },
+      "speaker": {
+        "title": "Speaker",
+        "type": "string",
+        "placeholder": "C0:28:8D:45:28:55",
+        "pattern": "^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$",
+        "required": true,
+        "description": "Your UE Boom speaker MAC address."
+      },
+      "host": {
+        "title": "Host",
+        "type": "string",
+        "placeholder": "40:98:AD:A3:56:C4",
+        "pattern": "^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$",
+        "required": true,
+        "description": "Your audio source MAC address (e.g. phone)."
+      }
     }
+  }
 }

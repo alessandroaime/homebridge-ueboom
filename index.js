@@ -1,12 +1,10 @@
-var Service, Characteristic, HomebridgeAPI;
-var util = require('util'), exec = require('child_process').exec, child;
+const util = require('util');
+const exec = require('child_process').exec;
+var child;
 
-module.exports = function(homebridge) {
-  Service = homebridge.hap.Service;
-  Characteristic = homebridge.hap.Characteristic;
-  HomebridgeAPI = homebridge;
-  homebridge.registerAccessory("homebridge-ueboom", "UEBoomSpeaker", UEBoomSpeaker);
-}
+let Service;
+let Characteristic;
+let HomebridgeAPI;
 
 function UEBoomSpeaker(log, config) {
   this.log = log;
@@ -16,7 +14,7 @@ function UEBoomSpeaker(log, config) {
   this.time = 1000;
   this.speaker = config.speaker;
   this.host = config.host;
-  this._service = new Service.Switch(this.name);
+  this._service = new Service.Speaker(this.name);
 
   this.cacheDirectory = HomebridgeAPI.user.persistPath();
   this.storage = require('node-persist');
@@ -61,4 +59,11 @@ UEBoomSpeaker.prototype._setOn = function(on, callback) {
   );
 
   callback();
+}
+
+module.exports = function(homebridge) {
+  Service = homebridge.hap.Service;
+  Characteristic = homebridge.hap.Characteristic;
+
+  homebridge.registerAccessory("homebridge-ueboom", "UEBoomSpeaker", UEBoomSpeaker);
 }

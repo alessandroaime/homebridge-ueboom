@@ -52,7 +52,7 @@ sudo npm install -g homebridge-ueboom
 To get the plugin working you have to provide the following parameters:
 
   * `speaker`: MAC address of the speaker
-  * `host`: MAC address of the music source device (iPhone, ...)
+  * `host`: MAC address of the audio source device (iPhone, ...)
 
 In case you don't know how to retrieve the MAC address of the speaker:
 
@@ -98,8 +98,12 @@ Since more than one person asked me how this works and that the speaker doesn't 
 This is the command that does the whole work, everything else is just boilerplate code for the homebridge plugin:
 
 ```bash
-gatttool -i hci0 -b $SPEAKER_ADDRESS --char-write-req -a 0x0003 -n ${HOST_ADDRESS}01
+gatttool -i hci0 -b $SPEAKER_ADDRESS --char-write-req -a 0x0003 -n ${HOST_ADDRESS}${ON_OFF_COMMAND}
 ```
+
+- `SPEAKER_ADDRESS` is the MAC address of the speaker
+- `HOST_ADDRESS` is the MAC address of the audio source device (iPhone, ...)
+- `ON_OFF_COMMAND` is `01` to turn the speaker on and `02` to turn it off
 
 **The `gatttool` command turns the speaker on but doesn’t associate the speaker with the Raspberry Pi. The speaker connects to the `host` device (in my case my iPhone).**
 
@@ -113,7 +117,7 @@ I first installed Apple's [Bluetooth logging profile](https://developer.apple.co
 
 ![packetLoggerScreenshot](README/packetLoggerScreenshot.png)
 
-From here I retrieved the MAC address of the speaker (as described above) and used `gatttool` to perform a write request, and *BOOM* I can turn on the speaker from my command line.
+From here I retrieved the MAC address of the speaker (as described above) and used `gatttool` to perform a write request, and *BOOM* (pun intended) I can turn on the speaker from my command line.
 
 ## Contributors
 

@@ -24,7 +24,7 @@ First, install [Homebridge](https://github.com/nfarina/homebridge) and `gatttool
 
 ```bash
 sudo npm install -g homebridge
-sudo apt-get install bluez
+sudo apt-get install -y bluez
 ```
 
 Then install this plugin:

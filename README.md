@@ -38,7 +38,7 @@ sudo npm install -g homebridge-ueboom
 In case you're using [Homebridge Docker](https://github.com/oznu/docker-homebridge), add the following line to your container startup script:
 
 ```bash
-apk add --no-cache bluez-deprecated
+sudo apt-get install -y bluez
 ```
 
 Then install this plugin:

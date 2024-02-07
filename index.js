@@ -11,12 +11,12 @@ module.exports = function(homebridge) {
 function UEBoomSpeaker(log, config) {
   this.log = log;
   this.name = config.name;
-  this.stateful = true;
+  // this.stateful = true;
   this.reverse = false;
   this.time = 1000;
   this.speaker = config.speaker;
   this.host = config.host;
-  this._service = new Service.Switch(this.name);
+  this._service = new Service.Speaker(this.name);
 
   this.cacheDirectory = HomebridgeAPI.user.persistPath();
   this.storage = require('node-persist');
@@ -25,13 +25,15 @@ function UEBoomSpeaker(log, config) {
     forgiveParseErrors: true
   });
 
-  this._service.getCharacteristic(Characteristic.On).on('set', this._setOn.bind(this));
+  this._service.getCharacteristic(Characteristic.Active).on('set', this._setActive.bind(this));
+  this._service.getCharacteristic(Characteristic.Mute).on('set', this._setMute.bind(this));
+  this._service.getCharacteristic(Characteristic.Mute).on('get', this._getMute.bind(this));
 
   var cachedState = this.storage.getItemSync(this.name);
   if ((cachedState === undefined) || (cachedState === false)) {
-    this._service.setCharacteristic(Characteristic.On, false);
+    this._service.setCharacteristic(Characteristic.Active, false);
   } else {
-    this._service.setCharacteristic(Characteristic.On, true);
+    this._service.setCharacteristic(Characteristic.Active, true);
   }
 }
 
@@ -46,7 +48,7 @@ UEBoomSpeaker.prototype.getServices = function() {
   return [informationService, this._service];
 }
 
-UEBoomSpeaker.prototype._setOn = function(on, callback) {
+UEBoomSpeaker.prototype._setActive = function(on, callback) {
   this.log("Setting speaker to " + on);
 
   this.storage.setItemSync(this.name, on);
@@ -61,4 +63,17 @@ UEBoomSpeaker.prototype._setOn = function(on, callback) {
   );
 
   callback();
+}
+
+UEBoomSpeaker.prototype._setMute = function(mute, callback) {
+  this.log("Setting speaker to " + mute);
+
+  callback();
+}
+
+UEBoomSpeaker.prototype._getMute = function() {
+  this.log("Getting speaker mute state");
+
+  const currentValue = 1;
+  return currentValue;
 }

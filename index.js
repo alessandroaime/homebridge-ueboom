@@ -1,9 +1,10 @@
+var util = require('util'), exec = require('child_process').exec, child;
+
 module.exports = (api) => {
-  api.registerAccessory("NewUEBoomSpeaker", NewUEBoomSpeaker);
-  var util = require('util'), exec = require('child_process').exec, child;
+  api.registerAccessory("UEBoomSpeaker", UEBoomSpeaker);
 };
 
-class NewUEBoomSpeaker {
+class UEBoomSpeaker {
 
   constructor(log, config, api) {
       this.log = log;
@@ -39,8 +40,6 @@ class NewUEBoomSpeaker {
 
   handleActiveSet(value) {
     this.log.debug('Triggered SET Active:' + value);
-
-    this.storage.setItemSync(this.name, value);
 
     child = exec(
       "gatttool -i hci0 -b " + this.guest + " --char-write-req -a 0x0003 -n " + this.host + (on ? "01" : "02"),

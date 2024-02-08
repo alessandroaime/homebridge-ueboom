@@ -90,6 +90,11 @@ UEBoomSpeaker.prototype = {
 
 }
 
+// See: https://github.com/isklikas/homebridge-http-speaker/blob/master/index.js
+// See: https://www.npmjs.com/package/homebridge-multiroom-speaker?activeTab=code
+
+/*
+
 UEBoomSpeaker.prototype.getServices = function() {
 
   this.informationService = informationService;
@@ -113,11 +118,6 @@ UEBoomSpeaker.prototype._setOn = function(on, callback) {
 
   callback();
 }
-
-// See: https://github.com/isklikas/homebridge-http-speaker/blob/master/index.js
-// See: https://www.npmjs.com/package/homebridge-multiroom-speaker?activeTab=code
-
-/*
 
 class UEBoomSpeaker {
 

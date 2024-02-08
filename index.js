@@ -22,7 +22,7 @@ class UEBoomSpeaker {
 
       this.informationService = new this.api.hap.Service.AccessoryInformation()
         .setCharacteristic(this.api.hap.Characteristic.Manufacturer, "Alessandro Aime")
-        .setCharacteristic(this.api.hap.Characteristic.Model, "UE Boom");
+        .setCharacteristic(this.api.hap.Characteristic.Model, "UE Boom")
         .setCharacteristic(this.api.hap.Characteristic.SerialNumber, this.guest);
 
       this.name = config.name;

@@ -21,7 +21,7 @@ function UEBoomSpeaker(log, config) {
   this.volume = {};
   this.mute = {};
 
-  this.service = new Service.Speaker(this.name, "speakerService");
+  this.service = new Service.SmartSpeaker(this.name);
 
   this.cacheDirectory = HomebridgeAPI.user.persistPath();
   this.storage = require('node-persist');
@@ -30,9 +30,13 @@ function UEBoomSpeaker(log, config) {
     forgiveParseErrors: true
   });
 
-  this.service.getCharacteristic(Characteristic.Mute)
-    .on("get", this.getMute.bind(this))
-    .on("set", this.setMute.bind(this));
+  this.service.getCharacteristic(Characteristic.CurrentMediaState)
+    .on("get", this.getCurrentMediaState.bind(this))
+    .on("set", this.setCurrentMediaState.bind(this));
+
+  this.service.getCharacteristic(Characteristic.TargetMediaState)
+    .on("get", this.getTargetMediaState.bind(this))
+    .on("set", this.setTargetMediaState.bind(this));
 
   this.service.addCharacteristic(new Characteristic.Volume)
     .on("get", this.getVolume.bind(this))
@@ -68,9 +72,13 @@ UEBoomSpeaker.prototype = {
     return [informationService, this.service];
   },
 
-  getMute: function (callback) {},
+  getCurrentMediaState: function (callback) {},
 
-  setMute: function (state, callback) {},
+  setCurrentMediaState: function (state, callback) {},
+
+  getTargetMediaState: function (callback) {},
+
+  setTargetMediaState: function (state, callback) {},
 
   getVolume: function (callback) {},
 

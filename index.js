@@ -1,5 +1,5 @@
 module.exports = (api) => {
-  api.registerAccessory("homebridge-ueboom", "UEBoomSpeaker", UEBoomSpeaker);
+  api.registerAccessory("UEBoomSpeaker", UEBoomSpeaker);
   var util = require('util'), exec = require('child_process').exec, child;
 };
 

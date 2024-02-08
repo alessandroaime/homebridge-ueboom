@@ -40,6 +40,13 @@ class UEBoomSpeaker {
 
   }
 
+  getServices() {
+    return [
+      this.informationService,
+      this.speakerService,
+    ];
+  }
+
   handleActiveGet() {
     this.log.debug('Triggered GET Active');
 

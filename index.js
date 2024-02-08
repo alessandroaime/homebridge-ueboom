@@ -73,13 +73,9 @@ UEBoomSpeaker.prototype = {
     return [informationService, this.service];
   },
 
-  getCurrentMediaState: function () {
-    return 0;
-  },
+  getCurrentMediaState: function () {},
 
-  getTargetMediaState: function () {
-    return 0;
-  },
+  getTargetMediaState: function () {},
 
   setTargetMediaState: function (value) {},
 

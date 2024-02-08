@@ -38,7 +38,7 @@ class UEBoomSpeaker {
   }
 
   handleActiveSet(value) {
-    this.log.debug('Triggered SET Active:' value);
+    this.log.debug('Triggered SET Active:' + value);
 
     this.storage.setItemSync(this.name, value);
 
@@ -60,7 +60,7 @@ class UEBoomSpeaker {
   }
 
   handleMuteSet(value) {
-    this.log.debug('Triggered SET Mute:' value);
+    this.log.debug('Triggered SET Mute:' + value);
   }
 
 }

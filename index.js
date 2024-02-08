@@ -37,6 +37,7 @@ function UEBoomSpeaker(log, config) {
     .on("get", this.getTargetMediaState.bind(this))
     .on("set", this.setTargetMediaState.bind(this));
 
+  /*
   this.service.addCharacteristic(new Characteristic.Volume)
     .on("get", this.getVolume.bind(this))
     .on("set", this.setVolume.bind(this));
@@ -44,6 +45,7 @@ function UEBoomSpeaker(log, config) {
   this.service.addCharacteristic(new Characteristic.Active)
     .on("get", this.getActive.bind(this))
     .on("set", this.setActive.bind(this));
+  */
 
   /*
   this.service.getCharacteristic(Characteristic.On).on('set', this._setOn.bind(this));
@@ -72,11 +74,11 @@ UEBoomSpeaker.prototype = {
   },
 
   getCurrentMediaState: function () {
-    return this.Characteristic.CurrentMediaState.PLAY;
+    //return this.Characteristic.CurrentMediaState.PLAY;
   },
 
   getTargetMediaState: function () {
-    return this.Characteristic.TargetMediaState.PLAY;
+    //return this.Characteristic.TargetMediaState.PLAY;
   },
 
   setTargetMediaState: function (value) {},

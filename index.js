@@ -32,7 +32,6 @@ function UEBoomSpeaker(log, config) {
 
   this.service.getCharacteristic(Characteristic.CurrentMediaState)
     .on("get", this.getCurrentMediaState.bind(this))
-    .on("set", this.setCurrentMediaState.bind(this));
 
   this.service.getCharacteristic(Characteristic.TargetMediaState)
     .on("get", this.getTargetMediaState.bind(this))
@@ -72,13 +71,15 @@ UEBoomSpeaker.prototype = {
     return [informationService, this.service];
   },
 
-  getCurrentMediaState: function (callback) {},
+  getCurrentMediaState: function () {
+    return this.Characteristic.CurrentMediaState.PLAY;
+  },
 
-  setCurrentMediaState: function (state, callback) {},
+  getTargetMediaState: function () {
+    return this.Characteristic.TargetMediaState.PLAY;
+  },
 
-  getTargetMediaState: function (callback) {},
-
-  setTargetMediaState: function (state, callback) {},
+  setTargetMediaState: function (value) {},
 
   getVolume: function (callback) {},
 

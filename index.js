@@ -20,25 +20,14 @@ class UEBoomSpeaker {
 
       this.service = new this.Service(this.Service.Speaker);
 
-      this.service.getCharacteristic(this.Characteristic.Mute)
-        .onGet(this.handleMuteGet.bind(this))
-        .onSet(this.handleMuteSet.bind(this));
-
       this.service.getCharacteristic(this.Characteristic.Active)
         .onGet(this.handleActiveGet.bind(this))
         .onSet(this.handleActiveSet.bind(this));
 
-  }
+      this.service.getCharacteristic(this.Characteristic.Mute)
+        .onGet(this.handleMuteGet.bind(this))
+        .onSet(this.handleMuteSet.bind(this));
 
-  handleMuteGet() {
-    this.log.debug('Triggered GET Mute');
-
-    const currentValue = 1;
-    return currentValue;
-  }
-
-  handleMuteSet(value) {
-    this.log.debug('Triggered SET Mute:' value);
   }
 
   handleActiveGet() {
@@ -61,6 +50,17 @@ class UEBoomSpeaker {
         }
       }
     );
+  }
+
+  handleMuteGet() {
+    this.log.debug('Triggered GET Mute');
+
+    const currentValue = 1;
+    return currentValue;
+  }
+
+  handleMuteSet(value) {
+    this.log.debug('Triggered SET Mute:' value);
   }
 
 }

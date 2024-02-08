@@ -31,12 +31,20 @@ function UEBoomSpeaker(log, config) {
   });
 
   this.service.getCharacteristic(Characteristic.Mute)
-    .on("get", this.getMuteState.bind(this))
-    .on("set", this.setMuteState.bind(this));
+    .on("get", this.getMute.bind(this))
+    .on("set", this.setMute.bind(this));
 
   this.service.addCharacteristic(new Characteristic.Volume)
     .on("get", this.getVolume.bind(this))
     .on("set", this.setVolume.bind(this));
+
+  this.service.addCharacteristic(new Characteristic.Active)
+    .on("get", this.getActive.bind(this))
+    .on("set", this.setActive.bind(this));
+
+  this.service.addCharacteristic(new Characteristic.Power)
+    .on("get", this.getPower.bind(this))
+    .on("set", this.setPower.bind(this));
 
   this.service.getCharacteristic(Characteristic.On).on('set', this._setOn.bind(this));
 
@@ -64,17 +72,21 @@ UEBoomSpeaker.prototype = {
     return [informationService, this.service];
   },
 
-  getMuteState: function (callback) {},
+  getMute: function (callback) {},
 
-  setMuteState: function (state, callback) {},
+  setMute: function (state, callback) {},
 
-  getActiveState: function (callback) {},
+  getVolume: function (callback) {},
 
-  setActiveState: function (state, callback) {},
+  setVolume: function (state, callback) {},
 
-  getPowerState: function (callback) {},
+  getActive: function (callback) {},
 
-  setPowerState: function (state, callback) {},
+  setActive: function (state, callback) {},
+
+  getPower: function (callback) {},
+
+  setPower: function (state, callback) {},
 
   getServices: function() {
     return [this.service];

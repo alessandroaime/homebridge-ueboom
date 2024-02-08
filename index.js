@@ -42,10 +42,6 @@ function UEBoomSpeaker(log, config) {
     .on("get", this.getActive.bind(this))
     .on("set", this.setActive.bind(this));
 
-  this.service.getCharacteristic(Characteristic.Power)
-    .on("get", this.getPower.bind(this))
-    .on("set", this.setPower.bind(this));
-
   /*
   this.service.getCharacteristic(Characteristic.On).on('set', this._setOn.bind(this));
 
@@ -83,10 +79,6 @@ UEBoomSpeaker.prototype = {
   getActive: function (callback) {},
 
   setActive: function (state, callback) {},
-
-  getPower: function (callback) {},
-
-  setPower: function (state, callback) {},
 
   getServices: function() {
     return [this.service];

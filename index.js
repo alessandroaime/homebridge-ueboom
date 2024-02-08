@@ -74,11 +74,11 @@ UEBoomSpeaker.prototype = {
   },
 
   getCurrentMediaState: function () {
-    //return this.Characteristic.CurrentMediaState.PLAY;
+    return 0;
   },
 
   getTargetMediaState: function () {
-    //return this.Characteristic.TargetMediaState.PLAY;
+    return 0;
   },
 
   setTargetMediaState: function (value) {},

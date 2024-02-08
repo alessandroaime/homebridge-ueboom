@@ -31,9 +31,6 @@
     "node-persist": "^2.1.0"
   },
   "main": "index.js",
-  "scripts": {
-    "test": ""
-  },
   "funding": {
     "type": "paypal",
     "url": "https://paypal.me/alessandroaime"

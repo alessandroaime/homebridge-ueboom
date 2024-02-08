@@ -17,14 +17,14 @@
                 "placeholder": "C0:28:8D:45:28:55",
                 "pattern": "^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$",
                 "required": true,
-                "description": "Your UEBoom mac address."
+                "description": "Your UE Boom MAC address."
             },
             "host": {
                 "title": "Host",
                 "type": "string",
                 "placeholder": "4098ADA356C4",
                 "required": true,
-                "description": "Your UEBoom host."
+                "description": "Your music source MAC address."
             }
         }
     }

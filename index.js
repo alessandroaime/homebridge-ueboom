@@ -1,9 +1,92 @@
+var Service, Characteristic, HomebridgeAPI;
 var util = require('util'), exec = require('child_process').exec, child;
 
-module.exports = (api) => {
-  api.registerAccessory("UEBoomSpeaker", UEBoomSpeaker);
-  // api.registerPlatform("UEBoomSpeaker", UEBoomSpeaker);
-};
+module.exports = function(homebridge) {
+  Service = homebridge.hap.Service;
+  Characteristic = homebridge.hap.Characteristic;
+  HomebridgeAPI = homebridge;
+  homebridge.registerAccessory("homebridge-ueboom", "UEBoomSpeaker", UEBoomSpeaker);
+}
+
+function UEBoomSpeaker(log, config) {
+  this.log = log;
+  this.name = config.name;
+  this.stateful = true;
+  this.reverse = false;
+  this.time = 1000;
+  this.speaker = config.speaker;
+  this.host = config.host;
+
+  this.service = new Service.Speaker(this.name, "speakerService");
+
+  this.cacheDirectory = HomebridgeAPI.user.persistPath();
+  this.storage = require('node-persist');
+  this.storage.initSync({
+    dir: this.cacheDirectory,
+    forgiveParseErrors: true
+  });
+
+  this.service.getCharacteristic(Characteristic.On).on('set', this._setOn.bind(this));
+
+  var cachedState = this.storage.getItemSync(this.name);
+  if ((cachedState === undefined) || (cachedState === false)) {
+    this.service.setCharacteristic(Characteristic.On, false);
+  } else {
+    this.service.setCharacteristic(Characteristic.On, true);
+  }
+}
+
+UEBoomSpeaker.prototype = {
+
+  getServices: function () {
+    this.log("Creating UE Boom speaker...");
+    var informationService = new Service.AccessoryInformation();
+  },
+
+  getMuteState: function (callback) {},
+
+  setMuteState: function (state, callback) {},
+
+  getActiveState: function (callback) {},
+
+  setActiveState: function (state, callback) {},
+
+  getPowerState: function (callback) {},
+
+  setPowerState: function (state, callback) {},
+
+}
+
+UEBoomSpeaker.prototype.getServices = function() {
+  var informationService = new Service.AccessoryInformation();
+  informationService.setCharacteristic(Characteristic.Manufacturer, "Alessandro Aime")
+  informationService.setCharacteristic(Characteristic.Model, "UE Boom")
+  informationService.setCharacteristic(Characteristic.SerialNumber, this.speaker);
+
+  this.informationService = informationService;
+
+  return [informationService, this.service];
+}
+
+UEBoomSpeaker.prototype._setOn = function(on, callback) {
+  this.log("Setting speaker to " + on);
+
+  this.storage.setItemSync(this.name, on);
+
+  child = exec(
+    "gatttool -i hci0 -b " + this.speaker + " --char-write-req -a 0x0003 -n " + this.host + (on ? "01" : "02"),
+    function(error, stdout, stderr) {
+      if (error !== null) {
+        console.log("stderr: " + stderr);
+      }
+    }
+  );
+
+  callback();
+}
+
+
+//////////
 
 class UEBoomSpeaker {
 

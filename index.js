@@ -14,8 +14,12 @@ function UEBoomSpeaker(log, config) {
   this.stateful = true;
   this.reverse = false;
   this.time = 1000;
+
   this.speaker = config.speaker;
   this.host = config.host;
+
+  this.volume = {};
+  this.mute = {};
 
   this.service = new Service.Speaker(this.name, "speakerService");
 
@@ -26,14 +30,24 @@ function UEBoomSpeaker(log, config) {
     forgiveParseErrors: true
   });
 
+  this.service.getCharacteristic(Characteristic.Mute)
+    .on("get", this.getMuteState.bind(this))
+    .on("set", this.setMuteState.bind(this));
+
+  this.service.addCharacteristic(new Characteristic.Volume)
+    .on("get", this.getVolume.bind(this))
+    .on("set", this.setVolume.bind(this));
+
   this.service.getCharacteristic(Characteristic.On).on('set', this._setOn.bind(this));
 
+  /*
   var cachedState = this.storage.getItemSync(this.name);
   if ((cachedState === undefined) || (cachedState === false)) {
     this.service.setCharacteristic(Characteristic.On, false);
   } else {
     this.service.setCharacteristic(Characteristic.On, true);
   }
+  */
 }
 
 UEBoomSpeaker.prototype = {
@@ -41,6 +55,13 @@ UEBoomSpeaker.prototype = {
   getServices: function () {
     this.log("Creating UE Boom speaker...");
     var informationService = new Service.AccessoryInformation();
+
+    informationService
+      .setCharacteristic(Characteristic.Manufacturer, "Alessandro Aime")
+      .setCharacteristic(Characteristic.Model, "UE Boom")
+      .setCharacteristic(Characteristic.SerialNumber, this.speaker);
+
+    return [informationService, this.service];
   },
 
   getMuteState: function (callback) {},
@@ -55,13 +76,13 @@ UEBoomSpeaker.prototype = {
 
   setPowerState: function (state, callback) {},
 
+  getServices: function() {
+    return [this.service];
+  }
+
 }
 
 UEBoomSpeaker.prototype.getServices = function() {
-  var informationService = new Service.AccessoryInformation();
-  informationService.setCharacteristic(Characteristic.Manufacturer, "Alessandro Aime")
-  informationService.setCharacteristic(Characteristic.Model, "UE Boom")
-  informationService.setCharacteristic(Characteristic.SerialNumber, this.speaker);
 
   this.informationService = informationService;
 
@@ -87,7 +108,8 @@ UEBoomSpeaker.prototype._setOn = function(on, callback) {
 
 // See: https://github.com/isklikas/homebridge-http-speaker/blob/master/index.js
 // See: https://www.npmjs.com/package/homebridge-multiroom-speaker?activeTab=code
-//////////
+
+/*
 
 class UEBoomSpeaker {
 
@@ -163,3 +185,5 @@ class UEBoomSpeaker {
   }
 
 }
+
+*/

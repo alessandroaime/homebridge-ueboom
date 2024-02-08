@@ -65,13 +65,11 @@ UEBoomSpeaker.prototype._setActive = function(on, callback) {
   callback();
 }
 
-UEBoomSpeaker.prototype._setMute = function(mute, callback) {
-  this.log("Setting speaker to " + mute);
-
-  callback();
+UeBoomSpeaker.prototype.handleMuteSet(value) {
+    this.log("Setting speaker to " + mute);
 }
 
-UEBoomSpeaker.prototype._getMute = function() {
+UeBoomSpeaker.prototype.handleMuteGet() {
   this.log("Getting speaker mute state");
 
   const currentValue = 1;

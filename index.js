@@ -42,7 +42,7 @@ function UEBoomSpeaker(log, config) {
     .on("get", this.getActive.bind(this))
     .on("set", this.setActive.bind(this));
 
-  this.service.getCharacteristic(new Characteristic.On)
+  this.service.getCharacteristic(Characteristic.Power)
     .on("get", this.getPower.bind(this))
     .on("set", this.setPower.bind(this));
 

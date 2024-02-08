@@ -42,9 +42,13 @@ function UEBoomSpeaker(log, config) {
     .on("get", this.getActive.bind(this))
     .on("set", this.setActive.bind(this));
 
-  this.service.getCharacteristic(Characteristic.On).on('set', this._setOn.bind(this));
+  this.service.getCharacteristic(new Characteristic.Power)
+    .on("get", this.getPower.bind(this))
+    .on("set", this.setPower.bind(this));
 
   /*
+  this.service.getCharacteristic(Characteristic.On).on('set', this._setOn.bind(this));
+
   var cachedState = this.storage.getItemSync(this.name);
   if ((cachedState === undefined) || (cachedState === false)) {
     this.service.setCharacteristic(Characteristic.On, false);

@@ -2,6 +2,7 @@ var util = require('util'), exec = require('child_process').exec, child;
 
 module.exports = (api) => {
   api.registerAccessory("UEBoomSpeaker", UEBoomSpeaker);
+  // api.registerPlatform("UEBoomSpeaker", UEBoomSpeaker);
 };
 
 class UEBoomSpeaker {
@@ -11,11 +12,18 @@ class UEBoomSpeaker {
       this.config = config;
       this.api = api;
 
+      this.log.debug('UEBoomSpeaker Loaded');
+
       this.guest = config.guest;
       this.host = config.host;
 
       this.Service = this.api.hap.Service;
       this.Characteristic = this.api.hap.Characteristic;
+
+      this.informationService = new this.api.hap.Service.AccessoryInformation()
+        .setCharacteristic(this.api.hap.Characteristic.Manufacturer, "Alessandro Aime")
+        .setCharacteristic(this.api.hap.Characteristic.Model, "UE Boom");
+        .setCharacteristic(this.api.hap.Characteristic.SerialNumber, this.guest);
 
       this.name = config.name;
 

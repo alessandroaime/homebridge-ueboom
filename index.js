@@ -28,13 +28,13 @@ class UEBoomSpeaker {
       this.name = config.name;
 
       // this.service = new this.Service(this.Service.Speaker);
-      this.service = new this.api.hap.Service.Speaker(this.name);
+      this.speakerService = new this.api.hap.Service.Speaker(this.name);
 
-      this.service.getCharacteristic(this.Characteristic.Active)
+      this.speakerService.getCharacteristic(this.Characteristic.Active)
         .onGet(this.handleActiveGet.bind(this))
         .onSet(this.handleActiveSet.bind(this));
 
-      this.service.getCharacteristic(this.Characteristic.Mute)
+      this.speakerService.getCharacteristic(this.Characteristic.Mute)
         .onGet(this.handleMuteGet.bind(this))
         .onSet(this.handleMuteSet.bind(this));
 

@@ -1,77 +1,66 @@
-var Service, Characteristic, HomebridgeAPI;
-var util = require('util'), exec = require('child_process').exec, child;
+module.exports = (api) => {
+  api.registerAccessory("homebridge-ueboom", "UEBoomSpeaker", UEBoomSpeaker);
+  var util = require('util'), exec = require('child_process').exec, child;
+};
 
-module.exports = function(homebridge) {
-  Service = homebridge.hap.Service;
-  Characteristic = homebridge.hap.Characteristic;
-  HomebridgeAPI = homebridge;
-  homebridge.registerAccessory("homebridge-ueboom", "UEBoomSpeaker", UEBoomSpeaker);
-}
+class UEBoomSpeaker {
 
-function UEBoomSpeaker(log, config) {
-  this.log = log;
-  this.name = config.name;
-  // this.stateful = true;
-  this.reverse = false;
-  this.time = 1000;
-  this.speaker = config.speaker;
-  this.host = config.host;
-  this._service = new Service.Speaker(this.name);
+  constructor(log, config, api) {
+      this.log = log;
+      this.config = config;
+      this.api = api;
 
-  this.cacheDirectory = HomebridgeAPI.user.persistPath();
-  this.storage = require('node-persist');
-  this.storage.initSync({
-    dir: this.cacheDirectory,
-    forgiveParseErrors: true
-  });
+      this.speaker = config.speaker;
+      this.host = config.host;
 
-  this._service.getCharacteristic(Characteristic.Active).on('set', this._setActive.bind(this));
-  this._service.getCharacteristic(Characteristic.Mute).on('set', this._setMute.bind(this));
-  this._service.getCharacteristic(Characteristic.Mute).on('get', this._getMute.bind(this));
+      this.Service = this.api.hap.Service;
+      this.Characteristic = this.api.hap.Characteristic;
 
-  var cachedState = this.storage.getItemSync(this.name);
-  if ((cachedState === undefined) || (cachedState === false)) {
-    this._service.setCharacteristic(Characteristic.Active, false);
-  } else {
-    this._service.setCharacteristic(Characteristic.Active, true);
+      this.name = config.name;
+
+      this.service = new this.Service(this.Service.Speaker);
+
+      this.service.getCharacteristic(this.Characteristic.Mute)
+        .onGet(this.handleMuteGet.bind(this))
+        .onSet(this.handleMuteSet.bind(this));
+
+      this.service.getCharacteristic(this.Characteristic.Active)
+        .onGet(this.handleActiveGet.bind(this))
+        .onSet(this.handleActiveSet.bind(this));
+
   }
-}
 
-UEBoomSpeaker.prototype.getServices = function() {
-  var informationService = new Service.AccessoryInformation();
-  informationService.setCharacteristic(Characteristic.Manufacturer, "Alessandro Aime")
-  informationService.setCharacteristic(Characteristic.Model, "UE Boom")
-  informationService.setCharacteristic(Characteristic.SerialNumber, this.speaker);
+  handleMuteGet() {
+    this.log.debug('Triggered GET Mute');
 
-  this.informationService = informationService;
+    const currentValue = 1;
+    return currentValue;
+  }
 
-  return [informationService, this._service];
-}
+  handleMuteSet(value) {
+    this.log.debug('Triggered SET Mute:' value);
+  }
 
-UEBoomSpeaker.prototype._setActive = function(on, callback) {
-  this.log("Setting speaker to " + on);
+  handleActiveGet() {
+    this.log.debug('Triggered GET Active');
 
-  this.storage.setItemSync(this.name, on);
+    const currentValue = this.Characteristic.Active.INACTIVE;
+    return currentValue;
+  }
 
-  child = exec(
-    "gatttool -i hci0 -b " + this.speaker + " --char-write-req -a 0x0003 -n " + this.host + (on ? "01" : "02"),
-    function(error, stdout, stderr) {
-      if (error !== null) {
-        console.log("stderr: " + stderr);
+  handleActiveSet(value) {
+    this.log.debug('Triggered SET Active:' value);
+
+    this.storage.setItemSync(this.name, value);
+
+    child = exec(
+      "gatttool -i hci0 -b " + this.speaker + " --char-write-req -a 0x0003 -n " + this.host + (on ? "01" : "02"),
+      function(error, stdout, stderr) {
+        if (error !== null) {
+          console.log("stderr: " + stderr);
+        }
       }
-    }
-  );
+    );
+  }
 
-  callback();
-}
-
-UeBoomSpeaker.prototype.handleMuteSet(value) {
-    this.log("Setting speaker to " + mute);
-}
-
-UeBoomSpeaker.prototype.handleMuteGet() {
-  this.log("Getting speaker mute state");
-
-  const currentValue = 1;
-  return currentValue;
 }

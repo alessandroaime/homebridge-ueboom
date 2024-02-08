@@ -1,16 +1,16 @@
 module.exports = (api) => {
-  api.registerAccessory("UEBoomSpeaker", UEBoomSpeaker);
+  api.registerAccessory("NewUEBoomSpeaker", NewUEBoomSpeaker);
   var util = require('util'), exec = require('child_process').exec, child;
 };
 
-class UEBoomSpeaker {
+class NewUEBoomSpeaker {
 
   constructor(log, config, api) {
       this.log = log;
       this.config = config;
       this.api = api;
 
-      this.speaker = config.speaker;
+      this.guest = config.guest;
       this.host = config.host;
 
       this.Service = this.api.hap.Service;
@@ -43,7 +43,7 @@ class UEBoomSpeaker {
     this.storage.setItemSync(this.name, value);
 
     child = exec(
-      "gatttool -i hci0 -b " + this.speaker + " --char-write-req -a 0x0003 -n " + this.host + (on ? "01" : "02"),
+      "gatttool -i hci0 -b " + this.guest + " --char-write-req -a 0x0003 -n " + this.host + (on ? "01" : "02"),
       function(error, stdout, stderr) {
         if (error !== null) {
           console.log("stderr: " + stderr);
